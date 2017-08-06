@@ -1,0 +1,72 @@
+Security APAR Assistant (SAAssist)
+
+Home
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+= About =
+
+%!include: ''video-saassist.html''
+
+Security APAR Assist (SAAssist) is a tool (Open Source) to help System
+Administrators manage APARs (Security Fixes) for IBM AIX and IBM PowerVM
+environment.
+
+This tool works like Linux "yum" or "apt-get" to manage the security fixes
+(CVE and IVs).
+
+SAAssist works as client/server reducing time to verify if fix is applicable,
+reducing time to deploy the fix to AIX and VIOS servers, reducing
+false-positives, and is not necessary high skill knowledge about AIX
+filesets/version management :)
+
+SAAssist works directly with Fix Level Recommendation Tool, the IBM official
+website.
+
+The installation and configuration is simple and also can be integrated with
+orchestrator or automation software (IBM BigFix, Chef, Puppet, etc)
+
+There are two basic components on SAAssist: SAAssist Server (saassist-server)
+and SAAssist Client (saassist-client).
+This is a Open Source software licensed by Apache License 2.0.
+
+
+__Important:__
+
+**The Security APAR Assistant (including saassist-server and saassist-client)
+is not an IBM software and it is not supported or guaranteed by IBM**.
+
+IBM AIX, IBM PowerVM and IBM Fix Level Recommended Tool website are registered
+trademarks of IBM Corporation in the United States, other countries, or both.
+
+= How it works =
+
+SAAssist Server (saassist-server) is a tool that works directly with the IBM
+Fix Level Recommendation Tool (FLRT) website and it creates a local repository
+with APARs information and packages based on CVE or IV number.
+
+These APARs information and packages are accessed by SAAssist Client
+(saassist-client) by HTTP or NFS protocol and checks if the APAR affect the
+server and if fix can be installed.
+
+Only the SAAssist Server needs to have access to IBM FLRT website directly or
+using web proxy. SAAssist Client needs to have access only to your local
+SAAssist Server using HTTP or NFS protocol.
+
+For more details about how to install and use, check out:
+
+- [Security Assistant Server Documentation saassist-server_doc.html]
+- [Security Assistant Client Documentation saassist-client_doc.html]
+
+
+Any kind of contribution are welcome (see
+[Contributing link contributing.html])
+
+**Remark:**
+
+SAAssist works with fix/APAR for AIX and PowerVM but Java, OpenSSH, OpenSSL and
+IBM System Mirror (PowerHA/HACMP) are not supported yet.
+[See ToDo contributing.html]
+
+%!include: inc/footer.t2t

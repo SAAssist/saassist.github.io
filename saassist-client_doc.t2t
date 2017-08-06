@@ -1,0 +1,408 @@
+Security APAR Assistant
+
+Server Installation
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+The SAAssist Client (saassist-client) is written in Korn Shell (ksh).
+
+This is a simple ksh script that accesses the SAAssist Server (saassist-server)
+using HTTP or NFS protocol and collects information about a specific APAR
+(CVE/IV), checks if it is applicable for the server, provides detailed
+information and installs the fix if required by you.
+
+Using NFS procotol, there is no requirements. Curl is required if you want to
+use saassist-client through HTTP procotol.
+
+
+%%TOC
+
+
+== SAAssist Client (saassist-client) Installation ==
+
+
+If you want to use HTTP protocol, remember the package curl is required for IBM
+AIX/PowerVM.
+
+Download the saassist-client from the link, extract the files and edit
+client_config file.
+
+1. Download http://github.com/SAAssist/saassist-client
+
+2. Extract the files (unzip, untar ..)
+
+4. Edit and configure the client_config file
+    - Remark: To use HTTP protocol package curl is required on AIX / PowerVM
+
+    Please check the comments inside the config file
+
+
+== Using saassist-client ==
+
+The saassist-server is simple to use. You need to run the
+saassist-client.sh with the actions (parameters) that you want to perform and
+specify the CVE or IV Number if necessary.
+
+
+To get full help use: ``saassist-client.sh help``
+
+* checkall: Check all available APARs for the AIX/PowerVM
+* preview : Verifies if the system is affected by CVE/IV
+* info    : Shows details about the CVE/IV
+* install : Installs the APAR if it is available and applicable to the system
+
+
+=== Examples ===
+
+- checkall
+```
+./saassist-client checkall
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+[CLIENT] Downloading FLRT data from SAAssist Server
+[CLIENT] Downloading finished.
+[CLIENT] Generating checkall report
+SECURITY APAR     DATE       AFFECTED       BOOT         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------
+CVE-2016-2848     20161215      N           no           Vulnerabilities in BIND impact AIX
+CVE-2017-1093     20170129     *Y*          no           There is a vulnerability in bellmail that impacts AIX.
+CVE-2015-7855     20160121      N           no           Vulnerabilities in NTP affect AIX
+CVE-2015-8000     20160224      N           no           Vulnerability in BIND affects AIX
+IV80334           20160330      N           yes          SYSTEM CRASH WHEN USING CIFS_FS DUE TO TREE CORRUPTION
+CVE-2016-0281     20160728      N           yes          Vulnerability in mustendd device driver impacts AIX
+CVE-2015-8241     20160222      N           no           Vulnerabilities in LibXML2 affect AIX
+CVE-2015-8704     20160422      N           no           Vulnerability in BIND affects AIX
+IV81503           20160307      N           yes          multibos may fail to mount or remove a standby instance
+IV82196           20160307      N           yes          Core dump in many commands when using NIS
+IV82694           20160816     *Y*          yes          Server using 10 GB PCIE adapters and large_send may crash
+CVE-2015-8140     20160608     *Y*          no           Vulnerabilities in NTP affect AIX
+CVE-2016-0281     20160728     *Y*          yes          Vulnerability in mustendd device driver impacts AIX
+CVE-2016-1286     20160616      N(ifix)     no           Vulnerabilities in BIND affects AIX
+IV85460           20160606     *Y*          yes          Malformed network packets can cause system crash
+IV86773           20160901     *Y*          yes          Performance regression when using Olson timezone format
+CVE-2016-2519     20160906      N(ifix)     no           Vulnerabilities in NTP affect AIX
+CVE-2016-3053     20161017     *Y*          no           Vulnerability in lsmcode affects AIX
+CVE-2016-6079     20161031     *Y*          no           Vulnerability in lquerylv in LVM impacts AIX
+CVE-2016-0266     20161202      N           no           Vulnerability in pConsole impacts AIX
+CVE-2016-2775     20161118     *Y*          no           Vulnerabilities in BIND impact AIX
+CVE-2016-8972     20161215     *Y*          yes          Vulnerability in bellmail affects AIX
+IV91199           20170202     *Y*          yes          Potential data loss using Virtual FC with num_cmd_elems greater than 256
+CVE-2016-2848     20161215     *Y*          no           There are two vulnerabilities in BIND that impact AIX.
+CVE-2016-9311     20170213     *Y*          no           There are multiple vulnerabilities in NTPv3 and NTPv4 that impact AIX.
+CVE-2016-9131     20170307     *Y*          no           There is a vulnerability in BIND that impacts AIX.
+CVE-2017-5486     20170525     *Y*          no           There are multiple vulnerabilities in tcpdump that impact AIX.
+IV95102           20170602     *Y*          yes          SYSTEM CRASH WHEN USING PROCFS FOR PROCESSES CLOSING MANY FILES
+CVE-2017-6464     20170707     *Y*          no           There are multiple vulnerabilities in NTPv3 and NTPv4 that impact AIX
+IV96553           20170715      N           yes          UNDETECTED DATA LOSS AFTER STORAGE ERRORS WITH CERTAIN ADAPTERS
+```
+
+
+- preview
+```
+./saassist-client preview CVE-2017-1093
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+[CLIENT] Retrieving APAR CVE-2017-1093 info from saassist-server.kairo.eti.br
+[CLIENT] Checking if CVE/IV is applicable for OS version 6100-09
+[CLIENT] Checking if CVE/IV is applicable for OS release 6100-09-07
+[CLIENT] Checking if there are APARs already applied
+     `- IV92238 is NOT installed
+[CLIENT] This system is AFFECTED by CVE-2017-1093
+     `- Downloading APAR to /opt/saassist/tmp
+     `- Running IV92238m8a.170112.epkg.Z preview
+     `- APAR IV92238m8a.170112.epkg.Z is APPLICABLE to the system
+
+[CLIENT] This system is AFFECTED by CVE-2017-1093 (REBOOT REQUIRED: no)
+```
+
+
+- info
+```
+./saassist-client info CVE-2017-1093
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+
+[CLIENT] Getting APAR 'CVE-2017-1093' info
+
+IBM SECURITY ADVISORY
+
+First Issued: Sun Jan 29 01:19:56 CST 2017
+|Updated: Wed Jul 26 12:40:04 CDT 2017
+|Update 1: Changed impacted upper level fileset level for AIX 7.2.1 to
+|   bos.net.tcp.client_core 7.2.1.0.
+
+The most recent version of this document is available here:
+
+http://aix.software.ibm.com/aix/efixes/security/bellmail_advisory2.asc
+https://aix.software.ibm.com/aix/efixes/security/bellmail_advisory2.asc
+ftp://aix.software.ibm.com/aix/efixes/security/bellmail_advisory2.asc
+
+
+Security Bulletin:  Vulnerability in bellmail affects AIX (CVE-2017-1093)
+
+
+===============================================================================
+
+SUMMARY:
+
+   There is a vulnerability in bellmail that impacts AIX.
+
+
+===============================================================================
+
+VULNERABILITY DETAILS:
+
+   CVEID: CVE-2017-1093
+   http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1093
+   https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1093
+   DESCRIPTION: IBM AIX could allow a local user to exploit a vulnerability in
+      the bellmail binary to gain root privileges.
+(...)
+```
+
+
+- install
+```
+./saassist-client install CVE-2017-1093
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+[CLIENT] Retrieving APAR CVE-2017-1093 info from saassist-server.kairo.eti.br
+[CLIENT] Checking if CVE/IV is applicable for OS version 6100-09
+[CLIENT] Checking if CVE/IV is applicable for OS release 6100-09-07
+[CLIENT] Checking if there are APARs already applied
+     `- IV92238 is NOT installed
+[CLIENT] This system is AFFECTED by CVE-2017-1093
+     `- Downloading APAR to /opt/saassist/tmp
+     `- Running IV92238m8a.170112.epkg.Z preview
+     `- APAR IV92238m8a.170112.epkg.Z is APPLICABLE to the system
+[CLIENT] This system is AFFECTED by CVE-2017-1093 (REBOOT REQUIRED: no)
+
+[CLIENT] Starting the APAR CVE-2017-1093 in 10 seconds. Use CTRL+C to cancel now!
+     `- Running IV92238m8a.170112.epkg.Z install preview/test
+     `- APAR IV92238m8a.170112.epkg.Z is APPLICABLE to the system
++-----------------------------------------------------------------------------+
+Efix Manager Initialization
++-----------------------------------------------------------------------------+
+Initializing log /var/adm/ras/emgr.log ...
+Efix package file is: /opt/saassist/tmp/CVE-2017-1093/bellmail_fix2/IV92238m8a.170112.epkg.Z
+MD5 generating command is /usr/bin/csum
+MD5 checksum is e1f1dadd5b2fb031921321f0d35a6a3f
+Accessing efix metadata ...
+Processing efix label "IV92238m8a" ...
+Verifying efix control file ...
+
++-----------------------------------------------------------------------------+
+Installp Prerequisite Verification
++-----------------------------------------------------------------------------+
+Verifying prerequisite file ...
+Checking prerequisites ...
+
+Prerequisite Number: 1
+  Fileset: bos.net.tcp.client
+  Minimal Level: 6.1.9.101
+  Maximum Level: 6.1.9.200
+  Actual Level: 6.1.9.102
+  Type: PREREQ
+  Requisite Met: yes
+
+All prerequisites have been met.
+
++-----------------------------------------------------------------------------+
+Processing APAR reference file
++-----------------------------------------------------------------------------+
+ATTENTION: Interim fix is enabled for automatic removal by installp.
+
++-----------------------------------------------------------------------------+
+Efix Attributes
++-----------------------------------------------------------------------------+
+LABEL:            IV92238m8a
+PACKAGING DATE:   Thu Jan 12 03:12:23 CST 2017
+ABSTRACT:         IV92238,IV91006 for AIX 6.1 TL09
+PACKAGER VERSION: 7
+VUID:             00F850C34C00011203012217
+REBOOT REQUIRED:  no
+BUILD BOOT IMAGE: no
+PRE-REQUISITES:   yes
+SUPERSEDE:        no
+PACKAGE LOCKS:    no
+E2E PREREQS:      no
+FIX TESTED:       no
+ALTERNATE PATH:   None
+EFIX FILES:       1
+
+Install Scripts:
+  PRE_INSTALL:   no
+  POST_INSTALL:  no
+  PRE_REMOVE:    no
+  POST_REMOVE:   no
+
+File Number:      1
+  LOCATION:      /usr/bin/bellmail
+  FILE TYPE:     Standard (file or executable)
+  INSTALLER:     installp
+  SIZE:          72
+  ACL:           DEFAULT
+  CKSUM:         48632
+  PACKAGE:       bos.net.tcp.client
+  MOUNT INST:    no
+
++-----------------------------------------------------------------------------+
+Efix Description
++-----------------------------------------------------------------------------+
+IV92238 - A potential security issue exists
+IV91006 - A potential security issue exists
+
++-----------------------------------------------------------------------------+
+Efix Lock Management
++-----------------------------------------------------------------------------+
+Checking locks for file /usr/bin/bellmail ...
+
+All files have passed lock checks.
+
++-----------------------------------------------------------------------------+
+Space Requirements
++-----------------------------------------------------------------------------+
+Checking space requirements ...
+
+Space statistics (in 512 byte-blocks):
+File system: /usr, Free: 1175136, Required: 1517, Deficit: 0.
+File system: /tmp, Free: 698312, Required: 2580, Deficit: 0.
+
++-----------------------------------------------------------------------------+
+Efix Installation Setup
++-----------------------------------------------------------------------------+
+Unpacking efix package file ...
+Initializing efix installation ...
+
++-----------------------------------------------------------------------------+
+Efix State
++-----------------------------------------------------------------------------+
+Setting efix state to: INSTALLING
+
++-----------------------------------------------------------------------------+
+File Archiving
++-----------------------------------------------------------------------------+
+Saving all files that will be replaced ...
+Save directory is: /usr/emgrdata/efixdata/IV92238m8a/save
+File 1: Saving /usr/bin/bellmail as EFSAVE1 ...
+
++-----------------------------------------------------------------------------+
+Efix File Installation
++-----------------------------------------------------------------------------+
+Installing all efix files:
+Installing efix file #1 (File: /usr/bin/bellmail) ...
+
+Total number of efix files installed is 1.
+All efix files installed successfully.
+
++-----------------------------------------------------------------------------+
+Package Locking
++-----------------------------------------------------------------------------+
+Processing package locking for all files.
+File 1: installp fileset bos.net.tcp.client is already locked by emgr.
+
+All package locks processed successfully.
+
++-----------------------------------------------------------------------------+
+Reboot Processing
++-----------------------------------------------------------------------------+
+Reboot is not required by this efix package.
+
++-----------------------------------------------------------------------------+
+Efix State
++-----------------------------------------------------------------------------+
+Setting efix state to: STABLE
+
++-----------------------------------------------------------------------------+
+Operation Summary
++-----------------------------------------------------------------------------+
+Log file is /var/adm/ras/emgr.log
+
+EPKG NUMBER       LABEL               OPERATION              RESULT
+===========       ==============      =================      ==============
+1                 IV92238m8a          INSTALL                SUCCESS
+
+Return Status = SUCCESS
+
+[CLIENT] APAR CVE-2017-1093 Installation finished. (REBOOT REQUIRED: no)
+```
+
+
+- checkall (after fix installed)
+```
+./saassist-client checkall
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+[CLIENT] Downloading FLRT data from SAAssist Server
+[CLIENT] Downloading finished.
+[CLIENT] Generating checkall report
+SECURITY APAR     DATE       AFFECTED       BOOT         DESCRIPTION
+-------------------------------------------------------------------------------------------------------------
+CVE-2016-2848     20161215      N           no           Vulnerabilities in BIND impact AIX
+CVE-2017-1093     20170129      N(ifix)     no           There is a vulnerability in bellmail that impacts AIX.
+CVE-2015-7855     20160121      N           no           Vulnerabilities in NTP affect AIX
+CVE-2015-8000     20160224      N           no           Vulnerability in BIND affects AIX
+(...)
+```
+
+
+- preview (afer fix installed)
+```
+./saassist-client preview CVE-2017-1093
+
+========================================================================
+SAAssist-client (Security APAR Assist Client) - Version 0.2.0
+========================================================================
+
+Current OS Version: 6100-09-07
+
+[CLIENT] Verifying SAA Server over NFS
+[CLIENT] Retrieving APAR CVE-2017-1093 info from saassist-server.kairo.eti.br
+[CLIENT] Checking if CVE/IV is applicable for OS version 6100-09
+[CLIENT] Checking if CVE/IV is applicable for OS release 6100-09-07
+[CLIENT] Checking if there are APARs already applied
+     `- IV92238 is already installed
+
+[CLIENT] This system is NOT AFFECTED by CVE-2017-1093
+```
+
+
+= Reporting bugs and improvements =
+
+SAAssist Client https://github.com/SAAssist/saassist-client/issues
+
+
+= Contributing =
+
+Please access [contributing contributing.html].

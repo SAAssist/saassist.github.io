@@ -1,0 +1,335 @@
+Security APAR Assistant
+
+Server Installation
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+
+The SAAssist Server (saassist-server) is a Python tool.
+
+SAAssist Server will be a server repository for AIX/PowerVM IBM Fixes
+
+SAAssist Server accesses the IBM FLRT website and collects all information
+about a specific CVE / IV number. It downloads data from FLRT website and
+stores it in a repository to be used by SAAssist Client (saassist-client) upon
+request through HTTP or NFS.
+
+The saassist-server includes an HTTP server (saassist-webserver), if a non
+static HTTP server is available it can be used as well.
+
+Security APAR Assistant Server runs on AIX, Linux and *nix based systems.
+
+
+%%TOC
+
+
+= SAAssist Server (saassist-server) Installation =
+
+The dependencies to install the saassist-server are Python version 3 and
+BeautifulSoup4, a module for Python.
+
+== Installing Python 3 ==
+
+Python version 3 is required by saassist-server and it can runs on Linux, BSD,
+AIX and MacOS. For any Unix/Linux based system.
+
+Follow below the instruction for Linux and AIX installation.
+
+=== LINUX ===
+
+
+To install Python 3 use yum or apt-get from your Linux distribution, do the
+same to install pip3
+
+```
+yum install python3 pip3
+```
+or
+```
+apt-get install python3 pip3
+```
+
+=== AIX ===
+
+
+I have been using this Python3 package to my environment and it can be
+installed using ``smitty install``
+
+http://www.aixtools.net/index.php/python3
+
+
+== Installing BeautifulSoup4 ==
+
+BeautifulSoup is a Python package (module) and it is required for
+saassist-server. It can be installed using PIP
+
+```
+pip3 install bs4
+```
+
+== Installing saassist-server ==
+
+To install saassist-server you need to download the latest version, extract the
+content and edit config server_config.py file.
+
+1. Download https://github.com/saassist/saassist-server/releases
+
+2. Extract the file (unzip, tar, etc)
+
+
+==  Configuring saassist-server ==
+
+Please check the comments inside the config file
+
+``vi server_config.py``
+
+SAAssist Server works with two protocols HTTP or NFS that needs to be
+configured in ``server_config.py``
+
+=== Using protocol NFS ===
+
+To use NFS is necessary that the system administrator exports the full
+repository path (``{saassist-server directory}/saassist/data/repos``).
+
+It needs to be done on ```/etc/exports`` and NFS service needs to be running
+properly.
+
+=== Using protocol HTTP ===
+
+
+The web server is included but we recommend use static HTTP Server
+
+If you want to have a static HTTP Server is recommended install and configure
+it, allowing access to repository path
+(``{saassist-server directory}/saassist/data/repos``).
+
+If you want to run the included webserver, configure the info on
+``server_config.py`` and run:
+
+```
+./saassist-webserver.py
+SAA Server is running at port 8000
+
+```
+
+= Using saassist-server =
+
+The SAAssist Server is simple to be used. You need to run the saassist-server
+with arguments
+
+  -h, --help            show this help message and exit
+
+  -c APAR_DOWNLOAD, --create APAR_DOWNLOAD
+                        create CVE (Common Vulnerabilities and Exposures) or
+                        IV (Interim Fix) repository
+
+  -u APAR_UPDATE, --update APAR_UPDATE
+                        update an already existent CVE/IV repository
+
+  -l, --list            list all available CVE/IV
+
+  -cv OS_VERSION_DOWNLOAD, --createversion OS_VERSION_DOWNLOAD
+                        create the repository with all CVE/IV available for an
+                        specific OS version
+
+  -uv OS_VERSION_UPDATE, --updateversion OS_VERSION_UPDATE
+                        update the repository with all CVE/IV available for an
+                        specific OS version
+
+  -flrt, --flrt         Update the FLRT data from FLRT IBM Website.It will
+                        ignore the cache configuration.
+
+== Examples ==
+
+
+- Updating the FLRT local data
+
+```
+./saassist-server -flrt
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+[SERVER] Updating the FLRT data from FLRT IBM Website
+
+[SERVER] Accessing IBM FLRT to retrieve APARs informations.
+[SERVER] Download complete
+```
+
+- Listing fixes available in repos
+
+```
+./saassist-server -l
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+CVE-2012-1667
+CVE-2012-2200
+CVE-2012-5166
+CVE-2013-3005
+CVE-2013-3035
+CVE-2013-4396
+CVE-2013-5211
+CVE-2014-0930
+CVE-2014-3566
+CVE-2015-5477
+CVE-2015-5722
+CVE-2016-2775
+CVE-2016-8972
+CVE-2017-6458
+CVE-2017-6464
+IV13404
+IV20880
+IV21128
+IV26272
+IV27680
+IV32392
+IV33521
+IV35680
+IV35810
+(...)
+```
+
+- Creating repos for specific fix
+```
+./saassist-server -c IV96351
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+
+[SERVER] Populating repository for Security IV96351
+
+  -[REPO] Creating directory IV96351
+  -[REPO] Creating release directory 2.2
+  -[REPO] Downloading ASC file IV96351.asc
+  -[REPO] Downloading APAR file IV96351s9d.170525.61TL09SP09.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.3.90.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.4.40.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.5.20.epkg.Z
+  -[REPO] Creating file IV96351.info
+  -[REPO] Creating release directory 6100-09
+  -[REPO] Downloading ASC file IV96351.asc
+  -[REPO] Downloading APAR file IV96351s9d.170525.61TL09SP09.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.3.90.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.4.40.epkg.Z
+  -[REPO] Downloading APAR file IV96351s9d.170525.VIOS2.2.5.20.epkg.Z
+  -[REPO] Creating file IV96351.info
+
+[SERVER] Repository for IV96351 tasks finished.
+```
+
+- Updating repos for specific fix
+```
+./saassist-server -u CVE-2016-8972
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+
+[SERVER] Populating repository for Security CVE-2016-8972
+
+  -[REPO] Directory CVE-2016-8972 already exist but it will be updated
+  -[REPO] Release directory 7100-03 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+  -[REPO] Release directory 7100-04 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+  -[REPO] Release directory 7200-00 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+  -[REPO] Release directory 7200-01 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+  -[REPO] Release directory 6100-09 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+  -[REPO] Release directory 2.2 already exists but it will be updated.
+  -[REPO] Downloading ASC file CVE-2016-8972.asc
+  -[REPO] Downloading APAR file bellmail_fix.tar
+  -[REPO] Creating file CVE-2016-8972.info
+
+[SERVER] Repository for CVE-2016-8972 tasks finished.
+```
+
+- Creating repos for AIX 6100-07
+
+```
+./saassist-server -cv 6100-07
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+[SERVER] Downloading 44 fix(es) to create repos for 6100-07 version
+
+[SERVER] Populating repository for Security IV45897
+
+  -[REPO] Creating directory IV45897
+  -[REPO] Creating release directory 6100-07
+  -[REPO] Downloading ASC file IV45897.asc
+  -[REPO] Downloading APAR file IV45897p1a.HOT.61TL07SP01.140918.epkg.Z
+  -[REPO] Downloading APAR file IV45897s5a.130816.61TL07SP05.epkg.Z
+  -[REPO] Downloading APAR file IV45897s5a.130816.epkg.Z
+  -[REPO] Downloading APAR file IV45897s6a.130721.61TL07SP06.epkg.Z
+  -[REPO] Downloading APAR file IV45897s6a.130721.epkg.Z
+  -[REPO] Downloading APAR file IV45897s7a.130724.61TL07SP07.epkg.Z
+  -[REPO] Downloading APAR file IV45897s7a.130724.epkg.Z
+  -[REPO] Downloading APAR file IV45897s8a.130828.61TL07SP08.epkg.Z
+  -[REPO] Creating file IV45897.info
+
+[SERVER] Repository for IV45897 tasks finished.
+
+
+[SERVER] Populating repository for Security IV13404
+
+  -[REPO] Creating directory IV13404
+  -[REPO] Creating release directory 6100-07
+  -[REPO] Downloading ASC file IV13404.asc
+  -[REPO] Downloading APAR file IV13404s3a.130819.61TL07SP03.epkg.Z
+  -[REPO] Downloading APAR file IV13404s6a.130625.61TL07SP06.epkg.Z
+  -[REPO] Downloading APAR file IV13404s7a.130730.61TL07SP07.epkg.Z
+  -[REPO] Downloading APAR file IV13404s7a.130730.epkg.Z
+  -[REPO] Creating file IV13404.info
+
+[SERVER] Repository for IV13404 tasks finished.
+
+
+[SERVER] Populating repository for Security IV35680
+
+  -[REPO] Creating directory IV35680
+  -[REPO] Creating release directory 6100-07
+  -[REPO] Downloading ASC file IV35680.asc
+  -[REPO] Downloading APAR file IV35680s6a.epkg.Z
+  -[REPO] Creating file IV35680.info
+
+[SERVER] Repository for IV35680 tasks finished.
+
+(...)
+```
+
+- SAAssist identifies when a IV was replaced by a CVE
+```
+/saassist-server -c IV96311
+================================================================================
+SAAssist-server (Security APAR Assist Server) - Version 0.2.0
+================================================================================
+[INFO] You are trying to search for a IV that has a specific CVE. Please use the CVE instead IV.
+
+CVE reference for IV96311: CVE-2017-6458:4.2 / CVE-2017-6462:1.6 /
+CVE-2017-6464:4.2 / CVE-2017-6451:1.8 / CVE-2017-6458:4.2 / CVE-2017-6462:1.6 /
+CVE-2017-6464:4.2
+```
+
+
+
+= Reporting bugs =
+
+SAAssist Server https://github.com/SAAssist/saassist-server/issues
+
+
+= Contributing =
+
+Please access [contributing contributing.html].

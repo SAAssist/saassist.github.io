@@ -1,0 +1,86 @@
+Security APAR Assistant
+
+How it Works 
+
+%!includeconf: inc/config.t2t
+%!postproc: SITEROOT .
+%!include: inc/menu.t2t
+
+Security APAR Assist (SAAssist) is a tool (Open Source) to help System
+Administrators manage APARs (Security Fixes) for IBM AIX and IBM PowerVM
+environment.
+
+This tool works like Linux "yum" or "apt-get" to manage the security fixes
+(CVE and IVs).
+
+SAAssist works as client/server reducing time to verify if fix is applicable,
+reducing time to deploy the fix to AIX and VIOS servers, reducing
+false-positives, and is not necessary high skill knowledge about AIX
+filesets/version management :)
+
+SAAssist works directly with Fix Level Recommendation Tool, the IBM official
+website.
+
+The installation and configuration is simple and also can be integrated with
+orchestrator or automation software (IBM BigFix, Chef, Puppet, etc)
+
+There are two basic components on SAAssist: SAAssist Server (saassist-server)
+and SAAssist Client (saassist-client).
+This is a Open Source software licensed by Apache License 2.0.
+
+
+= Security APAR Assistant simple overview =
+%!include: ''video-saassist.html''
+
+= Technical Overview =
+
+```
+
+                                   [ Internet ]------------[ IBM FLRT website ]
+                                         |* web proxy
+                                         |
+                                 ________|________
+-c|u   downloads APAR to repos  |                 |
+-cv|uv downloads all APARs for  | saassist server | (APAR repository)
+       a specific OS version    |_________________|
+-flrt  download the FLRT data            |
+-l     list all current APARs in repos   |
+                                         |
+                                         |
+                                         |
+                                          `----- [  Repository  ]
+                                                 [  info, fixes ]
+                                                 [  HTTP: :NFS  ]
+                                                         |
+            .--------------------------------------------'
+            |
+    ________|_________
+    |                 |
+    | saassist client | (AIX / PowerVM Logical Partitions)
+    |_________________|
+            |
+            |
+            |`---- {preview}  verifies if APAR is applicable & boot required
+            |
+            |`-----{info}     gets detailed information about APAR (asc file)
+            |
+            |`-----{install}  installs APAR
+            |
+             `-----{checkall} checks all APARs applicable to Logical Partition
+
+```
+
+For more details, check out:
+
+- [Security Assistant Server Documentation saassist-server_doc.html]
+- [Security Assistant Client Documentation saassist-client_doc.html]
+
+
+== Need help ? ==
+
+Send me an email: kairo[@]kairo.eti.br
+
+%!include: inc/footer.t2t
+
+
+

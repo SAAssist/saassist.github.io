@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<meta name="author" content="Kairo Araujo">
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="site.css">
+<TITLE>Security APAR Assistant</TITLE>
+<link rel="icon" type="image/png" href="/favicon.png">
+</HEAD>
+<BODY>
+
+<DIV CLASS="header" ID="header">
+<H1>Security APAR Assistant</H1>
+<H3>How it Works </H3>
+</DIV>
+
+<DIV CLASS="body" ID="body">
+<div id="sidebar">
+<ul>
+  <li id="home"><a href="./index.html">Home</a></li>
+  <li id="howitworks"><a href="./howitworks.html">How it Works</a></li>
+  <li id="SAAssist Server Doc"><a href="./saassist-server_doc.html">SAAssist Server Doc</a></li>
+  <li id="SAAssist Client Doc"><a href="./saassist-client_doc.html">SAAssist Client Doc</a></li>
+  <li id="Developing / Contributing"><a href="./contributing.html">Developing / Contributing</a></li>
+  <li id="SAA Server releases"><a href="https://github.com/saassist/saassist-server/releases">SAA Server Download</a></li>
+  <li id="SAA CLient releases"><a href="https://github.com/saassist/saassist-server/releases">SAA Client Download</a></li>
+  <li id="github"><a href="https://github.com/saassist">Visit GitHub</a></li>
+</ul>
+</div>
+<P>
+Security APAR Assist (SAAssist) is a tool (Open Source) to help System
+Administrators manage APARs (Security Fixes) for IBM AIX and IBM PowerVM
+environment.
+</P>
+<P>
+This tool works like Linux "yum" or "apt-get" to manage the security fixes
+(CVE and IVs).
+</P>
+<P>
+SAAssist works as client/server reducing time to verify if fix is applicable,
+reducing time to deploy the fix to AIX and VIOS servers, reducing
+false-positives, and is not necessary high skill knowledge about AIX
+filesets/version management :)
+</P>
+<P>
+SAAssist works directly with Fix Level Recommendation Tool, the IBM official
+website.
+</P>
+<P>
+The installation and configuration is simple and also can be integrated with
+orchestrator or automation software (IBM BigFix, Chef, Puppet, etc)
+</P>
+<P>
+There are two basic components on SAAssist: SAAssist Server (saassist-server)
+and SAAssist Client (saassist-client).
+This is a Open Source software licensed by Apache License 2.0.
+</P>
+
+<H1>Security APAR Assistant simple overview</H1>
+
+ <iframe src="http://www.youtube.com/embed/N1aVLjfokY8"
+   width="640" height="390" frameborder="0" allowfullscreen>
+ </iframe>
+
+<H1>Technical Overview</H1>
+
+<PRE>
+
+                                   [ Internet ]------------[ IBM FLRT website ]
+                                         |* web proxy
+                                         |
+                                 ________|________
+-c|u   downloads APAR to repos  |                 |
+-cv|uv downloads all APARs for  | saassist server | (APAR repository)
+       a specific OS version    |_________________|
+-flrt  download the FLRT data            |
+-l     list all current APARs in repos   |
+                                         |
+                                         |
+                                         |
+                                          `----- [  Repository  ]
+                                                 [  info, fixes ]
+                                                 [  HTTP: :NFS  ]
+                                                         |
+            .--------------------------------------------'
+            |
+    ________|_________
+    |                 |
+    | saassist client | (AIX / PowerVM Logical Partitions)
+    |_________________|
+            |
+            |
+            |`---- {preview}  verifies if APAR is applicable &amp; boot required
+            |
+            |`-----{info}     gets detailed information about APAR (asc file)
+            |
+            |`-----{install}  installs APAR
+            |
+             `-----{checkall} checks all APARs applicable to Logical Partition
+
+</PRE>
+
+<P>
+For more details, check out:
+</P>
+
+<UL>
+<LI><A HREF="saassist-server_doc.html">Security Assistant Server Documentation</A>
+<LI><A HREF="saassist-client_doc.html">Security Assistant Client Documentation</A>
+</UL>
+
+<H2>Need help ?</H2>
+
+<P>
+Send me an email: kairo[@]kairo.eti.br
+</P>
+</div><div id="footer">
+<P>
+<IMG ALIGN="middle" SRC="./img/t2tpowered-white.png" BORDER="0" ALT="">
+</P>
+<P>
+Last modified on 06 August 2017 at 19:06
+(<A HREF="howitworks.t2t">See sources</A>)
+</P>
+<P>
+This page style is based on <A HREF="http://txt2tags.org">http://txt2tags.org</A> page, thanks Verde =)
+</P>
+</div><div id="fake">
+<!-- Google Analytics code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-NNNNNNN-X']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</DIV>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags howitworks.t2t -->
+</BODY></HTML>

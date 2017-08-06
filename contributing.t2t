@@ -1,0 +1,97 @@
+Security APAR Assistant
+
+Contributing
+
+%!includeconf: inc/config.t2t
+%!include: inc/menu.t2t
+
+
+SAAssist Server (saassist-server) is developed in Python (version 3) language
+and SAAssist Client (saassist-client) is developed in Korn Shell (ksh).
+
+
+%%TOC
+
+
+= Reporting bugs =
+
+SAAssist Server https://github.com/SAAssist/saassist-server/issues
+
+SAAssist Client https://github.com/SAAssist/saassist-client/issues
+
+= To Do =
+- [server/client] Implement checksum for files
+- [server/client] Implement support to IBM System Mirror(PowerHA/HACMP), Java
+OpenSSL, OpenSSH etc (all 'external packages')
+- [server/client] Include support for ftp protocol
+- [server] Create all unit tests for Python code
+- --[server] Avoid to store the same fix for different versions to reduce--
+  --data storage usage.--
+
+
+= New code or bug fixes =
+
+1. Create your account on GitHub (https://github.com)
+
+2. Create your account on GerritHub (https://review.gerrithub.io) using your
+GitHub account
+
+3. Do the fork from http://github.com/SAAssist/saassist-server or saassist-client
+
+4. Do the clone from your fork ``git clone https://github.com/username/saassist-server``
+
+5. Create a branch ``git checkout -b new_feature`` or ``git checkout -b bug_000X``
+
+6. Do your code or fix a bug :)
+
+7. Run tests ``tox -e py34`` (Not required for saassist-client)
+
+8. Submit your code to review ``git-review``
+
+
+= Project Overview =
+
+== saassist-server structure ==
+
+```
+
+    * server_config.py is the configuration file (basic variables)
+
+    * saassist-server(.py) is the command constructor
+
+    * saassist/saaserver.py is the server manager (repository content manager)
+        - SAAServer()
+          . repo_creation()
+
+    * saassist/datacollector.py is the data collector that works with FLRT site
+        - Collector()
+          . apar_data()
+```
+
+=== SCHEMA ===
+
+```
+    1. [ saassist-server.py ]
+       { user: CVE / IV }
+       { user: update or no }
+       --> saassist/saaserver.py
+
+    2. [ saassist/saaserver.py ]
+       { invoke datacollector.py with CVE/IV }
+       --> saassist/datacollector.py
+
+    3. [ saassist/datacollector.py ]
+       { access FLRT website }
+       { do parsing of data }
+       { return the data in a dictionary }
+       saassist/saaserver <--
+
+    4. [ saassist/saaserver.py ]
+       { validate data }
+       { create the repository data }
+       { output actions: user }
+```
+
+== saassist-client structure ==
+
+saassist-client is a simple Korn Shell (ksh)
