@@ -5,8 +5,6 @@ Home
 %!includeconf: inc/config.t2t
 %!include: inc/menu.t2t
 
-= About =
-
 %!include: ''video-saassist.html''
 
 Security APAR Assist (SAAssist) is a tool (Open Source) to help System
