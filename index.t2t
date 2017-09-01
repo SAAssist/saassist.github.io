@@ -42,6 +42,8 @@ trademarks of IBM Corporation in the United States, other countries, or both.
 
 = How it works =
 
+%!include: ''video-saassist-using.html''
+
 SAAssist Server (saassist-server) is a tool that works directly with the IBM
 Fix Level Recommendation Tool (FLRT) website and it creates a local repository
 with APARs information and packages based on CVE or IV number.
