@@ -31,6 +31,10 @@ This is an Open Source software licensed under Apache License 2.0.
 = Security APAR Assistant simple overview =
 %!include: ''video-saassist.html''
 
+Using Security APAR Assistant example
+
+%!include: ''video-saassist-using.html''
+
 = Technical Overview =
 
 ```
