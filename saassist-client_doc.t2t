@@ -12,8 +12,8 @@ using HTTP or NFS protocol and collects information about a specific APAR
 (CVE/IV), checks if it is applicable for the server, provides detailed
 information and installs the fix if required by you.
 
-Using NFS procotol, there is no requirements. Curl is required if you want to
-use saassist-client through HTTP procotol.
+Using NFS protocol, there are no requirements. Curl is required if you want to
+use saassist-client through HTTP protocol.
 
 
 %%TOC

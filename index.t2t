@@ -29,7 +29,7 @@ orchestrator or automation software (IBM BigFix, Chef, Puppet, etc)
 
 There are two basic components on SAAssist: SAAssist Server (saassist-server)
 and SAAssist Client (saassist-client).
-This is a Open Source software licensed by Apache License 2.0.
+This is an Open Source software licensed under Apache License 2.0.
 
 
 __Important:__
@@ -47,11 +47,11 @@ Fix Level Recommendation Tool (FLRT) website and it creates a local repository
 with APARs information and packages based on CVE or IV number.
 
 These APARs information and packages are accessed by SAAssist Client
-(saassist-client) by HTTP or NFS protocol and checks if the APAR affect the
-server and if fix can be installed.
+(saassist-client) by HTTP or NFS protocol and checks if the APAR affects the
+server and if a fix can be installed.
 
 Only the SAAssist Server needs to have access to IBM FLRT website directly or
-using web proxy. SAAssist Client needs to have access only to your local
+using a web proxy. SAAssist Client needs to have access only to your local
 SAAssist Server using HTTP or NFS protocol.
 
 For more details about how to install and use, check out:
@@ -60,13 +60,13 @@ For more details about how to install and use, check out:
 - [Security Assistant Client Documentation saassist-client_doc.html]
 
 
-Any kind of contribution are welcome (see
+Any kind of contribution is welcome (see
 [Contributing link contributing.html])
 
 **Remark:**
 
 SAAssist works with fix/APAR for AIX and PowerVM but Java, OpenSSH, OpenSSL and
-IBM System Mirror (PowerHA/HACMP) are not supported yet.
+IBM System Mirror (PowerHA/HACMP) is not supported yet.
 [See ToDo contributing.html]
 
 %!include: inc/footer.t2t

@@ -26,8 +26,7 @@ orchestrator or automation software (IBM BigFix, Chef, Puppet, etc)
 
 There are two basic components on SAAssist: SAAssist Server (saassist-server)
 and SAAssist Client (saassist-client).
-This is a Open Source software licensed by Apache License 2.0.
-
+This is an Open Source software licensed under Apache License 2.0.
 
 = Security APAR Assistant simple overview =
 %!include: ''video-saassist.html''

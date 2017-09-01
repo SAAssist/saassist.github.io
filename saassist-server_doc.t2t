@@ -15,8 +15,8 @@ about a specific CVE / IV number. It downloads data from FLRT website and
 stores it in a repository to be used by SAAssist Client (saassist-client) upon
 request through HTTP or NFS.
 
-The saassist-server includes an HTTP server (saassist-webserver), if a non
-static HTTP server is available it can be used as well.
+The saassist-server includes an HTTP server (saassist-webserver), if a
+non-static HTTP server is available it can be used as well.
 
 Security APAR Assistant Server runs on AIX, Linux and *nix based systems.
 
